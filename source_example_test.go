@@ -2,9 +2,16 @@ package cryptosource_test
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/Nerdmaster/cryptosource"
 )
+
+// This is a dummy assignment that ensures we conform to the Source64
+// interface.  For some reason rand.Rand doesn't actually offer any way to
+// validate this through standard code, so if this compiles, we know we're
+// good.
+var _ = rand.Source64(cryptosource.Source{})
 
 // This simple example shows how you might create a random number generator
 // while also proving that seeding doesn't do anything

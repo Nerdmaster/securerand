@@ -1,1 +1,1 @@
-module "github.com/Nerdmaster/securerand"
+module github.com/Nerdmaster/securerand

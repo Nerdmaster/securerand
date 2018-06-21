@@ -1,10 +1,9 @@
 package cryptosource
 
 import (
-	crand "crypto/rand"
+	"crypto/rand"
 	"math"
 	"math/big"
-	"math/rand"
 )
 
 var maxInt64 = new(big.Int).SetInt64(math.MaxInt64)
@@ -22,22 +21,22 @@ func (s Source) Seed(seed int64) {}
 // Int63 implements rand.Source, returning a cryptographically secure number
 // from 0 to 1<<63
 func (s Source) Int63() int64 {
-	var val, err = crand.Int(crand.Reader, maxInt64)
-	// Suppress errors by returning a PRNG value - this shouldn't happen unless
-	// somehow /dev/urandom is broken, in which case we have much bigger problems
-	if err != nil {
-		return rand.Int63()
-	}
-	return val.Int64()
+	return rnd(maxInt64).Int64()
 }
 
 // Uint64 implements rand.Source64
 func (s Source) Uint64() uint64 {
-	var val, err = crand.Int(crand.Reader, maxUint64)
-	// Suppress errors by returning a PRNG value - this shouldn't happen unless
-	// somehow /dev/urandom is broken, in which case we have much bigger problems
+	return rnd(maxUint64).Uint64()
+}
+
+// rnd internalizes the common logic of pulling crypto-safe data and returning it
+func rnd(*big.Int) *big.Int {
+	var val, err = rand.Int(rand.Reader, maxUint64)
+	// If we couldn't read from /dev/urandom, it's safe to panic.  Something very
+	// bad is going on.
 	if err != nil {
-		return rand.Uint64()
+		panic(err)
 	}
-	return val.Uint64()
+
+	return val
 }

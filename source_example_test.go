@@ -14,15 +14,21 @@ import (
 var _ = rand.Source64(securerand.Source{})
 
 // This simple example shows how you might create a random number generator
-// while also proving that seeding doesn't do anything
+// while also proving that seeding is a bad idea
 func Example() {
 	var r = securerand.New()
-	r.Seed(1)
-	var first = r.Int()
-	r.Seed(1)
-	var second = r.Int()
 
-	fmt.Println(first == second)
+	defer func() {
+		var r = recover()
+		if r == nil {
+			fmt.Println("Seed() should have panicked, but didn't!")
+		}
+
+		fmt.Println("Panic message: " + r.(string))
+	}()
+
+	r.Seed(1)
+
 	// Output:
-	// false
+	// Panic message: securerand.Source cannot be seeded
 }

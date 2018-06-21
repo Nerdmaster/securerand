@@ -14,9 +14,11 @@ var maxUint64 = new(big.Int).SetUint64(math.MaxUint64)
 // methods, and seeding is unused.
 type Source struct{}
 
-// Seed implements rand.Source, but does nothing, as cryptographically secure
-// randomness obviously can't be seeded
-func (s Source) Seed(seed int64) {}
+// Seed implements rand.Source, but panics if called, as cryptographically
+// secure randomness obviously can't be seeded
+func (s Source) Seed(seed int64) {
+	panic("securerand.Source cannot be seeded")
+}
 
 // Int63 implements rand.Source, returning a cryptographically secure number
 // from 0 to 1<<63

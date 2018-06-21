@@ -1,4 +1,4 @@
-package cryptosource
+package securerand
 
 import "math/rand"
 

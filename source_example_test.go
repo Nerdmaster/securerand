@@ -28,7 +28,6 @@ func Example() {
 	}()
 
 	r.Seed(1)
-
 	// Output:
 	// Panic message: securerand.Source cannot be seeded
 }

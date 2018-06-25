@@ -3,6 +3,7 @@ package securerand_test
 import (
 	"fmt"
 	"math/rand"
+	"testing"
 
 	"github.com/Nerdmaster/securerand"
 )
@@ -30,4 +31,28 @@ func Example() {
 	r.Seed(1)
 	// Output:
 	// Panic message: securerand.Source cannot be seeded
+}
+
+func TestRange(t *testing.T) {
+	var max int64 = 1000
+	var x int64
+
+	var r = securerand.New()
+
+	// This is far from perfect, but it gives us a decent shot at catching problems
+	for x = 0; x < max; x++ {
+		var rndVal = r.Int63n(max)
+		if rndVal >= max {
+			t.Errorf("r.Int63n(%d) got too high a value: %d", max, rndVal)
+			break
+		}
+	}
+
+	for x = 0; x < max; x++ {
+		var rndVal = r.Int63n(max)
+		if rndVal < 0 {
+			t.Errorf("r.Int63n(%d) got a negative value: %d", max, rndVal)
+			break
+		}
+	}
 }

@@ -1,3 +1,7 @@
+// Package securerand provides a simple wrapper around crypto/rand calls in
+// order to provide a nearly drop-in replacement for rand.Rand uses.  Note that
+// this can cause runtime panics if you try to seed it or if crypto cannot get
+// values (due to, e.g., /dev/urandom not being readable).
 package securerand
 
 import "math/rand"

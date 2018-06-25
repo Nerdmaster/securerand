@@ -32,8 +32,9 @@ func (s Source) Uint64() uint64 {
 }
 
 // rnd internalizes the common logic of pulling crypto-safe data and returning it
-func rnd(*big.Int) *big.Int {
-	var val, err = rand.Int(rand.Reader, maxUint64)
+func rnd(max *big.Int) *big.Int {
+	var val, err = rand.Int(rand.Reader, max)
+
 	// If we couldn't read from /dev/urandom, it's safe to panic.  Something very
 	// bad is going on.
 	if err != nil {
